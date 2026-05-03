@@ -1,0 +1,72 @@
+{
+    "user": {
+        "id": 1012301234,
+        "name": "antrelax",
+        "image": "https://server.com/images/1012301234.png",
+        "streak": [1, 1, 1, 0, 0, 1, 1],
+        "stat": {
+            "1": {
+            "allTime": 90,
+            "lastMonth": 95
+            },
+            "2": {
+            "allTime": null,
+            "lastMonth": null
+            }
+        }
+    },
+    "task": {
+        "id": 120034,
+        "order": 12,
+        "title": "Сколько будет 10_2 + 10_2?",
+        "image": null,
+        "answer": "4"
+    },
+    "TaskList": {
+        "order": 12,
+        "tasks": [
+            {
+                "taskId": 120034,
+                "order": 12,
+                "title": "Сколько будет 10_2 + 10_2?",
+                "image": null,
+                "answer": "4"
+            }
+        ]
+    },
+    "FilterList": {
+        "enteredFilters": [
+            {
+                "filterId": 7,
+                "values": ["1"]
+            },
+            {
+                "filterId": 15,
+                "values": ["Средний", "Сложный"]
+            }
+        ]
+    },
+    "AvailableFilters": {
+        "enteredFilters": [
+            {
+                "filterId": 7,
+                "name": "Номер задания",
+                "availableValues": [
+                    "1",
+                    "2"
+                ]
+            },
+            {
+                "filterId": 15,
+                "name": "Уровень сложности",
+                "availableValues": [
+                    "Очень простой",
+                    "Простой",
+                    "Базовый",
+                    "Средний",
+                    "Сложный"
+                ]
+            }
+        ]
+    }
+}
