@@ -20,7 +20,7 @@ const config = {
   },
 
   url: 'https://antrelax.github.io',
-  baseUrl: '/docs-as-a-code/',
+  baseUrl: '/doc-as-a-code/',
   organizationName: 'AntRelax', 
   projectName: 'docs-as-a-code',
   onBrokenLinks: 'warn',
