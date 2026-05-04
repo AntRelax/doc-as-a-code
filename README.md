@@ -16,18 +16,20 @@
 
 ```text
 .
-├── docs/                              # Документация (Markdown, схемы, спеки)
-│   ├── requirements/                  # Требования
-│   ├── BPmodel/                       # Модели бизнес-процессов
-│   │   ├── EventStormingModel/
-│   │   ├── BPMN/
-│   │   └── UML/
-│   ├── api/                           # REST API
-│   ├── asyncapi/                      # Асинхронное взаимодействие
-│   ├── BDdesign/                      # Проектирование БД
-│   ├── platform/                      # Платформизация
-│   ├── storage/                       # Хранение данных
-│   └── layouts/                       # Макеты
+├── .github/
+├── my-website/
+│   ├── docs/                              # Документация (Markdown, схемы, спеки)
+│   │   ├── requirements/                  # Требования
+│   │   ├── BPmodel/                       # Модели бизнес-процессов
+│   │   │   ├── EventStormingModel/
+│   │   │   ├── BPMN/
+│   │   │   └── UML/
+│   │   ├── api/                           # REST API
+│   │   ├── asyncapi/                      # Асинхронное взаимодействие
+│   │   ├── BDdesign/                      # Проектирование БД
+│   │   ├── platform/                      # Платформизация
+│   │   ├── storage/                       # Хранение данных
+│   │   └── layouts/                       # Макеты
 ├── .gitignore
 └── README.md
 ```
