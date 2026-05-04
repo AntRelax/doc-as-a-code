@@ -22,7 +22,7 @@ const config = {
   url: 'https://antrelax.github.io',
   baseUrl: '/doc-as-a-code/',
   organizationName: 'AntRelax', 
-  projectName: 'docs-as-a-code',
+  projectName: 'doc-as-a-code',
   onBrokenLinks: 'warn',
   markdown: {
     hooks: {
