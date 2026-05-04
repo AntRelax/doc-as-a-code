@@ -1,0 +1,277 @@
+openapi: 3.0.2
+info:
+  title: Cashback categories API
+  version: '1.0'
+  description: Select monthly cashback categories
+security:
+  - BearerAuth: []
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /users/{uid}/streak:
+    patch:
+      summary: Обновление стрика
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: boolean
+              description: Выполнена ли хотя бы одна задача сегодня
+      responses:
+        '200':
+          description: Успешное обновление
+        '500':
+          description: Внутренняя ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAnswer'
+  /users/{uid}:
+    get:
+      summary: Данные пользователя для ЛК
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '500':
+          description: Внутренняя ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAnswer'
+  /users/{uid}/answer:
+    put:
+      summary: Обновление статистики после ответа на задачу
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - taskId
+                - isCorrectAnswer
+              properties:
+                taskId:
+                  type: integer
+                isCorrectAnswer:
+                  type: boolean
+      responses:
+        '200':
+          description: Статистика обновлена
+        '400':
+          description: Задача не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAnswer'
+        '500':
+          description: Внутренняя ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAnswer'
+  /search:
+    post:
+      summary: Сложный поиск
+      description: Список задач (<=10 штук) по заданным фильтрам
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - filters
+              properties:
+                filters:
+                  $ref: '#/components/schemas/FilterList'
+                page:
+                  type: integer
+                  default: 1
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+        '400':
+          description: Ошибка в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAnswer'
+        '404':
+          description: Нет задач, удовлетворяющих фильтрам
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAnswer'
+        '500':
+          description: Внутренняя ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAnswer'
+  /search/filters:
+    get:
+      summary: Фильтры для поиска задач
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableFilters'
+        '500':
+          description: Внутренняя ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAnswer'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    ErrorAnswer:
+      description: Структура с описанием ошибки
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: '20002'
+    Streak:
+      type: array
+      items:
+        type: integer
+    SolvedStat:
+      type: array
+      items:
+        $ref: '#/components/schemas/SingleStat'
+    SingleStat:
+      type: object
+      required:
+        - allTime
+        - lastMonth
+      additionalProperties: false
+      properties:
+        allTime:
+          type: integer
+        lastMonth:
+          type: integer
+    User:
+      description: Данные пользователя
+      type: object
+      required:
+        - id
+        - name
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        image:
+          type: string
+          format: uri
+        streak:
+          $ref: '#/components/schemas/Streak'
+        stat:
+          $ref: '#/components/schemas/SolvedStat'
+    TaskList:
+      description: Список задач
+      type: object
+      required:
+        - order
+        - tasks
+      properties:
+        order:
+          type: integer
+          description: порядковый номер задания
+          minimum: 1
+          maximum: 27
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/SingleTask'
+    SingleTask:
+      description: Данные по задаче
+      type: object
+      required:
+        - taskId
+        - order
+        - title
+        - answer
+      properties:
+        taskId:
+          type: integer
+        order:
+          type: integer
+          description: порядковый номер задания
+          minimum: 1
+          maximum: 27
+        title:
+          type: string
+        answer:
+          type: string
+        image:
+          type: string
+          format: uri
+    AvailableFilters:
+      description: Список фильтров со всеми возможными значениями
+      type: array
+      items:
+        type: object
+        required:
+          - filterId
+          - name
+          - availableValues
+        properties:
+          filterId:
+            type: integer
+          name:
+            type: string
+          availableValues:
+            type: array
+            items:
+              type: string
+    FilterList:
+      description: Список выбранных фильтров и их значений
+      type: array
+      items:
+        type: object
+        required:
+          - filterId
+          - values
+        properties:
+          filterId:
+            type: integer
+          values:
+            type: array
+            items:
+              type: string

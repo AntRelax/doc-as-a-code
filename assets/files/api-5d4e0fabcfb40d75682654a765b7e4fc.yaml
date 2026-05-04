@@ -1,0 +1,71 @@
+asyncapi: 3.1.0
+info:
+  title: Education Platform API
+  version: 1.0.0
+  description: This API allows you to manage some server's tasks
+defaultContentType: application/json
+servers:
+  scram-connections:
+    host: 'api.server.test'
+    protocol: kafka-secure
+    description: Test broker
+    security:
+      - $ref: '#/components/securitySchemes/saslScram'
+channels:
+  answer_upload:
+    address: answer_upload
+    description: channel for recording user responses to task
+    messages:
+      AnswerUpload:
+        $ref: "#/components/messages/AnswerUpload"
+
+  answer_ready:
+    address: answer_ready
+    description: channel for returning if it is successfully record the answer or not
+    messages:
+      AnswerReady:
+        $ref: "#/components/messages/AnswerReady"
+
+operations:
+  uploadAnswer:
+    action: send
+    channel:
+      $ref: "#/channels/answer_upload"
+
+  answerReady:
+    action: receive
+    channel:
+      $ref: "#/channels/answer_ready"
+
+components:
+  messages:
+    AnswerUpload:
+      description: Message sent when user submits answers
+      payload:
+        type: object
+        required: [UID, taskID, isCorrectAnswer]
+        properties:
+          UID:
+            type: integer
+          taskID:
+            type: integer
+          isCorrectAnswer:
+            type: boolean
+    AnswerReady:
+      description: Message returning when server is finish to record the answer
+      payload:
+        type: object
+        required: [UID, taskID]
+        properties:
+          UID:
+            type: integer
+          taskID:
+            type: integer
+
+  securitySchemes:
+    saslScram:
+      type: scramSha256
+      description: Provide your username and password for SASL/SCRAM authentication
+    certs:
+      type: X509
+      description: Download the certificate files from service provider
