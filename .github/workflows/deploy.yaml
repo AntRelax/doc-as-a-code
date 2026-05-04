@@ -23,8 +23,16 @@ jobs:
         run: npm ci
         working-directory: my-website
 
+      - name: Clear cache
+        run: npm run clear
+        working-directory: my-website
+
       - name: Build
         run: npm run build
+        working-directory: my-website
+
+      - name: Create .nojekyll
+        run: touch build/.nojekyll
         working-directory: my-website
 
       - name: Deploy to GitHub Pages
